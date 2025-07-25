@@ -1,0 +1,10 @@
+.vs
+.vscode
+
+.github
+
+bin 
+obj
+publish
+
+*.csproj.user
