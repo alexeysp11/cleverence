@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cleverence.Library")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8607684af86435fca43d328ba1838169c4c32b41")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec662a502de11d70c5d675035d2000712ef1fd6a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cleverence.Library")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cleverence.Library")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
