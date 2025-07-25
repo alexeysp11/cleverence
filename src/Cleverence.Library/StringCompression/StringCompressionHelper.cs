@@ -52,6 +52,46 @@ public static class StringCompressionHelper
 
     public static string Decompress(string input)
     {
-        return "";
+        if (string.IsNullOrEmpty(input))
+        {
+            return "";
+        }
+        
+        var result = new StringBuilder();
+
+        char? previousChar = null;
+        foreach (char ch in input)
+        {
+            int parsedValue = 0;
+
+            // Initialize the first char.
+            if (previousChar == null)
+            {
+                if (int.TryParse(ch.ToString(), out parsedValue))
+                {
+                    throw new Exception("First character could not be integer");
+                }
+                previousChar = ch;
+                continue;
+            }
+
+            // Append the previous char multiple times.
+            if (int.TryParse(ch.ToString(), out parsedValue))
+            {
+                result.Append(new string(previousChar.Value, parsedValue));
+                previousChar = null;
+                continue;
+            }
+
+            // If the previous char is followed by the next one, append the previous char.
+            if (previousChar != ch)
+            {
+                result.Append(previousChar);
+                previousChar = ch;
+                continue;
+            }
+        }
+
+        return result.ToString();
     }
 }
