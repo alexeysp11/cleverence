@@ -47,6 +47,17 @@ public static class StringCompressionHelper
             previousChar = ch;
             charRepeatNum = 1;
         }
+
+        // Add the last character into the result.
+        if (previousChar == input.Last())
+        {
+            result.Append(previousChar);
+            if (charRepeatNum > 1)
+            {
+                result.Append(charRepeatNum);
+            }
+        }
+
         return result.ToString();
     }
 
