@@ -71,8 +71,9 @@ public static class StringCompressionHelper
         var result = new StringBuilder();
 
         char? previousChar = null;
-        foreach (char ch in input)
+        for (int i = 0; i < input.Length; i++)
         {
+            char ch = input[i];
             int parsedValue = 0;
 
             // Initialize the first char.
@@ -83,6 +84,10 @@ public static class StringCompressionHelper
                     throw new Exception("First character could not be integer");
                 }
                 previousChar = ch;
+                if (i == input.Length - 1)
+                {
+                    result.Append(ch);
+                }
                 continue;
             }
 
@@ -99,6 +104,10 @@ public static class StringCompressionHelper
             {
                 result.Append(previousChar);
                 previousChar = ch;
+                if (i == input.Length - 1)
+                {
+                    result.Append(ch);
+                }
                 continue;
             }
         }
