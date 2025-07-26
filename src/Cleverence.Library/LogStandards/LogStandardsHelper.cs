@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 
 namespace Cleverence.Library.LogStandards;
@@ -22,7 +23,7 @@ public static class LogStandardsHelper
 
         // Check if it's the second type.
         List<string> logLevelsType02 = [" | INFO | ", " | WARN | ", " | ERROR | ", " | DEBUG | "];
-        DateTime? dateTimeType02 = GetDateTimeFromLogRecord(logRecord, logLevelsType02);
+        DateTime? dateTimeType02 = GetDateTimeFromLogRecord(logRecord, logLevelsType02, "yyyy-MM-dd HH:mm:ss.ffff");
         if (dateTimeType02.HasValue)
         {
             // Get the log level.
@@ -39,7 +40,7 @@ public static class LogStandardsHelper
             string methodName02 = methodAndMessage02.Split(" | ").First();
 
             // Get message.
-            string message02 = GetTheRestOfLogRecord(logRecord, methodName02);
+            string message02 = GetTheRestOfLogRecord(logRecord, methodName02 + " | ");
 
             return GetConvertedRecordLog(
                 dateTimeType02.Value,
@@ -50,7 +51,7 @@ public static class LogStandardsHelper
 
         // Check if it's the first type.
         List<string> logLevelsType01 = [" INFORMATION ", " WARNING ", " ERROR ", " DEBUG "];
-        DateTime? dateTimeType01 = GetDateTimeFromLogRecord(logRecord, logLevelsType01);
+        DateTime? dateTimeType01 = GetDateTimeFromLogRecord(logRecord, logLevelsType01, "dd.MM.yyyy HH:mm:ss.fff");
         if (!dateTimeType01.HasValue)
         {
             throw new Exception("Could not determine the type of the log record");
@@ -73,11 +74,11 @@ public static class LogStandardsHelper
             message01);
     }
 
-    private static DateTime? GetDateTimeFromLogRecord(string logRecord, IEnumerable<string> logLevels)
+    private static DateTime? GetDateTimeFromLogRecord(string logRecord, IEnumerable<string> logLevels, string format)
     {
         foreach (var level in logLevels)
         {
-            DateTime? result = GetDateTimeFromLogRecord(logRecord, level);
+            DateTime? result = GetDateTimeFromLogRecord(logRecord, level, format);
             if (result.HasValue)
             {
                 return result;
@@ -86,7 +87,7 @@ public static class LogStandardsHelper
         return null;
     }
 
-    private static DateTime? GetDateTimeFromLogRecord(string logRecord, string logLevel)
+    private static DateTime? GetDateTimeFromLogRecord(string logRecord, string logLevel, string format)
     {
         int index = logRecord.IndexOf(logLevel);
         if (index == -1)
@@ -94,7 +95,9 @@ public static class LogStandardsHelper
             return null;
         }
         string dateTimeString = logRecord.Substring(0, index);
-        return DateTime.TryParse(dateTimeString, out DateTime dateTime) ? dateTime : null;
+        return DateTime.TryParseExact(dateTimeString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime)
+            ? dateTime
+            : null;
     }
 
     private static LogLevelFromRecord? GetLogLevelFromRecord(string logRecord, IEnumerable<string> logLevels)
@@ -169,7 +172,7 @@ public static class LogStandardsHelper
     {
         var result = new StringBuilder();
 
-        result.Append(dateTime.ToString("dd.MM.yyyy HH:mm:ss.ffff"));
+        result.Append(dateTime.ToString("dd-MM-yyyy HH:mm:ss.ffff"));
         result.Append("\t");
         result.Append(GetConvertedLogLevelString(logLevel));
         result.Append("\t");
